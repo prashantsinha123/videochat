@@ -1,0 +1,133 @@
+<!Doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-compatible" content="IE=edge"/>
+<meta name="viewport" content ="width=device-width,initial-scale=1">
+
+<style>
+
+.test{
+background-color:#33fcff;
+height:670px;
+width:1300px;
+
+
+}
+
+#text{
+padding:60px;
+border-radius:40px;
+top:100px;
+left:10px;
+position:relative;
+font-size:80px;
+color:grey;
+
+}
+#hi{
+text-align:center;
+font-size:40px;
+color:blue;
+}
+
+canvas{
+top:700px;
+left:0px;
+position:absolute;}
+
+.parallax {
+    
+    background-image: url('Skype-video-chat.png');
+    height: 100%; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#vid {
+border-radius:25px;
+padding:50px;
+background-color:#33fcff;
+top:80px;
+left:500px;
+position:absolute;
+}
+
+#image{
+width:1300px;
+height:670px;
+}
+
+body, html {
+    height: 100%;
+}
+</style>
+
+<body>
+
+<div id="vid-box"></div>
+<div id="vid">
+<a href="#" id="cool" >take pic</a>
+<canvas id="canvas" width="500" height="375"></canvas>
+<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+    <input type="text" name="username" id="username" placeholder="Enter your name" />
+    <input type="submit" name="login_submit" value="Log In">
+</form>
+
+<form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
+	<input type="text" name="number" placeholder="Enter Friend's name" />
+	<input type="submit" value="Call"/>
+</form>
+
+<form name="callEnd" id="end" action="videochat.html">
+	<input type="submit" value="Endcall">
+	</form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="prashant.me.js"></script>
+<script src="webrtc.js"></script>
+
+<script>
+var video_out = document.getElementById("vid-box");
+var canvas=document.querySelector("canvas");
+var context=canvas.getContext('2d');
+
+function login(form) {
+	var phone = window.phone = PHONE({
+	    number        : form.username.value || "Anonymous", // anonymous ko call laga . both are on same platform
+	    publish_key   : 'pub-c-9d1aa761-78bb-4a72-aa04-7d336fb81d76',
+	    subscribe_key : 'sub-c-a6130c1e-1753-11e7-aca9-02ee2ddab7fe',
+	});	
+	phone.ready(function(){ form.username.style.background="coral"; });
+	phone.receive(function(session){
+	    session.connected(function(session) { video_out.appendChild(session.video);
+		document.getElementById('cool').addEventListener('click',function(){
+context.drawImage(video_out.appendChild(session.video),0,0,500,375);});
+		});
+	    session.ended(function(session) { video_out.innerHTML=''; }); // further modification for call end.
+	});
+	return false; 	
+}
+
+function makeCall(form){
+	if (!window.phone) alert("Login First!");
+	else phone.dial(form.number.value);
+	return false;
+}
+
+
+</script>
+<div class="parallax">
+	<div id="hi">HIII!!!</div>
+</div>
+<img src="giphy.gif" id="image">
+<div class="test">
+	<div id="text"><pre>Whole new world
+of imagination</pre></div>
+</div>
+<img src="200.gif" id="image">
+</body>
+</head>
+</html>
